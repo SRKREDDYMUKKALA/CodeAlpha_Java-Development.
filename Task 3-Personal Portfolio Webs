@@ -1,0 +1,126 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Destination {
+    String name;
+    String weather;
+    double averageCost;
+
+    public Destination(String name, String weather, double averageCost) {
+        this.name = name;
+        this.weather = weather;
+        this.averageCost = averageCost;
+    }
+
+    @Override
+    public String toString() {
+        return "Destination: " + name + "\nWeather: " + weather + "\nAverage Cost: $" + averageCost + " per day";
+    }
+}
+
+class TravelItineraryPlanner {
+    ArrayList<Destination> destinations;
+    ArrayList<String> itinerary;
+    double totalBudget;
+    
+    public TravelItineraryPlanner() {
+        destinations = new ArrayList<>();
+        itinerary = new ArrayList<>();
+        totalBudget = 0.0;
+        
+        destinations.add(new Destination("Paris", "Sunny", 150));
+        destinations.add(new Destination("New York", "Cloudy", 200));
+        destinations.add(new Destination("Tokyo", "Rainy", 180));
+        destinations.add(new Destination("Sydney", "Sunny", 170));
+    }
+
+    public void showDestinations() {
+        System.out.println("Available Destinations:");
+        for (int i = 0; i < destinations.size(); i++) {
+            System.out.println((i + 1) + ". " + destinations.get(i).name);
+        }
+    }
+
+    public void addDestinationToItinerary(int index, int days) {
+        if (index >= 0 && index < destinations.size()) {
+            Destination selectedDestination = destinations.get(index);
+            itinerary.add(selectedDestination.name + " for " + days + " days");
+            totalBudget += selectedDestination.averageCost * days;
+            System.out.println(selectedDestination.name + " added to your itinerary for " + days + " days.");
+        } else {
+            System.out.println("Invalid destination choice.");
+        }
+    }
+
+    public void showItinerary() {
+        System.out.println("\nYour Travel Itinerary:");
+        for (String place : itinerary) {
+            System.out.println("- " + place);
+        }
+        System.out.println("Total Estimated Budget: $" + totalBudget);
+    }
+
+    public void displayWeatherForDestination(int index) {
+        if (index >= 0 && index < destinations.size()) {
+            Destination selectedDestination = destinations.get(index);
+            System.out.println("Weather for " + selectedDestination.name + ": " + selectedDestination.weather);
+        } else {
+            System.out.println("Invalid destination.");
+        }
+    }
+}
+
+public class Travel {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        TravelItineraryPlanner planner = new TravelItineraryPlanner();
+        int choice;
+
+        do {
+            System.out.println("\nTravel Itinerary Planner");
+            System.out.println("1. Show available destinations");
+            System.out.println("2. Add destination to itinerary");
+            System.out.println("3. Show weather for a destination");
+            System.out.println("4. Show itinerary and total budget");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    planner.showDestinations();
+                    break;
+
+                case 2:
+                    planner.showDestinations();
+                    System.out.print("Select a destination (by number): ");
+                    int destinationIndex = scanner.nextInt() - 1;
+                    System.out.print("Enter number of days you plan to stay: ");
+                    int days = scanner.nextInt();
+                    planner.addDestinationToItinerary(destinationIndex, days);
+                    break;
+
+                case 3:
+                    planner.showDestinations();
+                    System.out.print("Select a destination to see weather (by number): ");
+                    destinationIndex = scanner.nextInt() - 1;
+                    planner.displayWeatherForDestination(destinationIndex);
+                    break;
+
+                case 4:
+                    planner.showItinerary();
+                    break;
+
+                case 5:
+                    System.out.println("Exiting the planner. Safe travels!");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
+        } while (choice != 5);
+
+        scanner.close();
+    }
+}
